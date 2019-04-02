@@ -21,9 +21,43 @@ public class VipCardService {
     @Autowired
     public VipCardMapper vipCardMapper;
 
+    /**
+     * 添加会员卡
+     * @param vipCard
+     * @return
+     */
     public String addVipCard(VipCard vipCard){
         vipCardMapper.insert(vipCard);
-        return "success";
+        return "insert success";
+    }
+
+    /**
+     * 删除会员卡
+     */
+    public String deleteVipCard(String vid){
+        vipCardMapper.deleteByPrimaryKey(vid);
+        return "delete success";
+    }
+
+    /**
+     * 修改会员卡信息
+     * @param vipCard
+     * @return
+     */
+    public String updateVipCard(VipCard vipCard){
+        vipCardMapper.updateByPrimaryKey(vipCard);
+        return "update success";
+    }
+
+    /**
+     * 通过会员卡号查询余额
+     * @param vid
+     * @return
+     */
+    public int selectBalance(String vid){
+       VipCard vipCard= vipCardMapper.selectByPrimaryKey(vid);
+
+       return vipCard.getMoney();
     }
 
 
