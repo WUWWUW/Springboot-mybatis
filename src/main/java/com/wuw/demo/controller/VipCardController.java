@@ -1,6 +1,8 @@
 package com.wuw.demo.controller;
 
 import com.wuw.demo.domain.VipCard;
+import com.wuw.demo.redis.RedisKey;
+import com.wuw.demo.redis.RedisService;
 import com.wuw.demo.service.VipCardService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -35,6 +37,9 @@ public class VipCardController {
     @Autowired
     public VipCardService vipCardService;
 
+    @Autowired
+    public RedisService redisService;
+
     public Map<String,Object> map=new HashMap<>();
     @ApiOperation(value = "创建会员卡",notes = "根据VipCard对象创建会员卡")
     @ApiImplicitParam(name = "vipCard",value = "会员卡详细实体vipCard",required = true,dataType = "VipCard")
@@ -46,8 +51,9 @@ public class VipCardController {
         //        vipCard.setPhone("13343961803");
         //        vipCard.setMoney(100);
         //        vipCard.setStatus(Byte.valueOf("1"));
-
-        return  vipCardService.addVipCard(vipCard);
+        String msg=vipCardService.addVipCard(vipCard);
+        redisService.set(RedisKey.redisKey,"vip",VipCard.class);
+        return  msg;
 
     }
 
